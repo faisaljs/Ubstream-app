@@ -1,0 +1,245 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#090a10" />
+    <meta name="description" content="Get Ubstream for Android. Discover movies, shows, and anime in one place." />
+    <title>Ubstream — Your next watch starts here</title>
+    <style>
+      :root {
+        color-scheme: dark;
+        --bg: #090a10;
+        --panel: #11131c;
+        --panel-bright: #171923;
+        --text: #f5f5f7;
+        --muted: #a5a6b4;
+        --red: #e50914;
+        --line: rgba(255, 255, 255, .1);
+      }
+
+      * { box-sizing: border-box; }
+      html { scroll-behavior: smooth; }
+      body {
+        margin: 0;
+        background: var(--bg);
+        color: var(--text);
+        font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+        line-height: 1.5;
+      }
+      a { color: inherit; text-decoration: none; }
+      .shell { width: min(1080px, calc(100% - 40px)); margin: 0 auto; }
+      .topbar { height: 78px; display: flex; align-items: center; justify-content: space-between; }
+      .brand { display: inline-flex; align-items: center; gap: 11px; font-size: 1.2rem; font-weight: 750; letter-spacing: -.04em; }
+      .brand img { width: 38px; height: 38px; border-radius: 12px; }
+      .top-link { color: var(--muted); font-size: .92rem; transition: color .2s; }
+      .top-link:hover { color: var(--text); }
+
+      .hero {
+        position: relative;
+        display: grid;
+        grid-template-columns: 1.1fr .9fr;
+        align-items: center;
+        gap: 52px;
+        min-height: 570px;
+        padding: 58px 0 76px;
+      }
+      .hero::before {
+        content: "";
+        position: absolute;
+        z-index: -1;
+        width: 480px;
+        height: 480px;
+        right: -90px;
+        top: 35px;
+        border-radius: 50%;
+        background: radial-gradient(circle, rgba(229, 9, 20, .2), rgba(229, 9, 20, 0) 68%);
+        filter: blur(14px);
+      }
+      .eyebrow { color: #ff757c; font-size: .78rem; font-weight: 750; letter-spacing: .16em; text-transform: uppercase; }
+      h1 { max-width: 620px; margin: 18px 0; font-size: clamp(3rem, 7vw, 5.45rem); line-height: .99; letter-spacing: -.075em; }
+      h1 span { color: var(--red); }
+      .lead { max-width: 510px; margin: 22px 0 30px; color: var(--muted); font-size: 1.1rem; }
+      .actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; }
+      .button { display: inline-flex; align-items: center; justify-content: center; gap: 10px; min-height: 52px; padding: 0 21px; border: 1px solid transparent; border-radius: 13px; font-weight: 720; transition: transform .2s, background .2s, border-color .2s; }
+      .button:hover { transform: translateY(-2px); }
+      .button-primary { background: var(--red); box-shadow: 0 10px 32px rgba(229, 9, 20, .22); }
+      .button-primary:hover { background: #f31b25; }
+      .button-secondary { border-color: var(--line); background: rgba(255, 255, 255, .035); color: #dedee5; }
+      .button-secondary:hover { border-color: rgba(255, 255, 255, .25); }
+      .download-icon { font-size: 1.15rem; }
+      .version-note { margin-top: 15px; color: #777987; font-size: .82rem; }
+
+      .preview-wrap { display: flex; justify-content: center; align-items: center; min-height: 400px; }
+      .phone {
+        position: relative;
+        width: 258px;
+        height: 438px;
+        padding: 9px;
+        border: 1px solid rgba(255,255,255,.2);
+        border-radius: 36px;
+        background: linear-gradient(145deg, #343540, #11121a 32%, #252630);
+        box-shadow: 0 32px 80px rgba(0,0,0,.55), 0 0 0 8px rgba(255,255,255,.025);
+        transform: rotate(3deg);
+      }
+      .screen { height: 100%; overflow: hidden; border-radius: 28px; background: linear-gradient(180deg, #171923, #0c0d13); padding: 21px 15px; }
+      .screen-top { display: flex; justify-content: space-between; align-items: center; color: white; font-size: .72rem; font-weight: 720; }
+      .screen-top b { font-size: .92rem; letter-spacing: -.04em; }
+      .screen-top b span { color: var(--red); }
+      .search { height: 28px; margin: 16px 0; padding: 6px 10px; border-radius: 8px; background: #242631; color: #858795; font-size: .58rem; }
+      .screen-label { margin: 14px 0 9px; color: white; font-size: .72rem; font-weight: 720; }
+      .poster-row { display: flex; gap: 8px; }
+      .poster { flex: 1; height: 122px; border-radius: 9px; background: linear-gradient(150deg, #885046, #34202e 55%, #161722); position: relative; overflow: hidden; }
+      .poster:nth-child(2) { background: linear-gradient(145deg, #55726e, #263d48 55%, #171a22); }
+      .poster:nth-child(3) { background: linear-gradient(145deg, #b28a55, #63413c 50%, #201b29); }
+      .poster::before { content: ""; position: absolute; width: 62px; height: 100px; left: 18%; bottom: -25px; border-radius: 50% 50% 15% 15%; background: linear-gradient(160deg, rgba(255,255,255,.38), rgba(13,14,20,.9)); filter: blur(1px); }
+      .poster:nth-child(2)::before { left: 28%; background: linear-gradient(160deg, #a8aaa1, #20232b); }
+      .poster:nth-child(3)::before { left: 12%; background: linear-gradient(160deg, #e3bd82, #29202b); }
+      .poster-title { position: absolute; z-index: 1; left: 7px; right: 4px; bottom: 7px; color: white; font-size: .48rem; font-weight: 700; text-shadow: 0 1px 5px #000; }
+      .continue { height: 76px; display: flex; align-items: center; gap: 10px; padding: 8px; border: 1px solid rgba(255,255,255,.06); border-radius: 10px; background: #171923; }
+      .continue-art { width: 66px; height: 54px; border-radius: 6px; background: linear-gradient(130deg, #a25343, #392638 55%, #131722); }
+      .continue-info { color: white; font-size: .55rem; font-weight: 700; }
+      .continue-info small { display: block; margin-top: 4px; color: #9698a5; font-size: .45rem; font-weight: 500; }
+      .progress { width: 110px; height: 3px; margin-top: 7px; border-radius: 3px; background: #444651; }
+      .progress::after { content: ""; display: block; width: 58%; height: 100%; border-radius: inherit; background: var(--red); }
+      .phone-badge { position: absolute; right: -37px; bottom: 51px; padding: 11px 14px; border: 1px solid var(--line); border-radius: 12px; background: rgba(20,21,30,.9); color: #dedee5; font-size: .75rem; box-shadow: 0 15px 36px rgba(0,0,0,.35); transform: rotate(-3deg); }
+      .phone-badge strong { color: #fff; }
+
+      .features { padding: 46px 0 78px; border-top: 1px solid var(--line); }
+      .section-heading { margin: 0 0 26px; font-size: 1.45rem; letter-spacing: -.04em; }
+      .feature-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+      .feature { min-height: 154px; padding: 21px; border: 1px solid var(--line); border-radius: 17px; background: linear-gradient(145deg, rgba(255,255,255,.045), rgba(255,255,255,.012)); }
+      .feature-icon { display: grid; width: 36px; height: 36px; place-items: center; margin-bottom: 15px; border-radius: 11px; background: rgba(229,9,20,.12); color: #ff656c; font-size: 1.05rem; }
+      .feature h3 { margin: 0 0 5px; font-size: .98rem; }
+      .feature p { margin: 0; color: var(--muted); font-size: .84rem; }
+      .install { margin-bottom: 70px; padding: 28px; border: 1px solid var(--line); border-radius: 20px; background: var(--panel); display: flex; align-items: center; justify-content: space-between; gap: 22px; }
+      .install h2 { margin: 0 0 5px; font-size: 1.25rem; letter-spacing: -.04em; }
+      .install p { margin: 0; color: var(--muted); font-size: .9rem; }
+      footer { display: flex; justify-content: space-between; gap: 20px; padding: 22px 0 30px; border-top: 1px solid var(--line); color: #777987; font-size: .8rem; }
+      footer a:hover { color: var(--text); }
+      :focus-visible { outline: 2px solid #ff757c; outline-offset: 4px; }
+
+      @media (max-width: 760px) {
+        .hero { grid-template-columns: 1fr; gap: 24px; padding-top: 48px; }
+        .hero-copy { text-align: center; }
+        .lead { margin-left: auto; margin-right: auto; }
+        .actions { justify-content: center; }
+        .preview-wrap { min-height: 410px; }
+        .hero::before { top: 420px; right: 50%; transform: translateX(50%); }
+        .feature-grid { grid-template-columns: 1fr; }
+        .feature { min-height: unset; }
+        .install { align-items: flex-start; flex-direction: column; }
+      }
+      @media (max-width: 420px) {
+        .shell { width: min(100% - 28px, 1080px); }
+        .top-link { font-size: .82rem; }
+        .button { width: 100%; }
+        .phone { transform: scale(.92) rotate(3deg); }
+        .phone-badge { right: -23px; }
+        footer { flex-direction: column; gap: 8px; }
+      }
+      @media (prefers-reduced-motion: reduce) { *, *::before, *::after { scroll-behavior: auto !important; transition-duration: .01ms !important; } }
+    </style>
+  </head>
+  <body>
+    <header class="shell topbar">
+      <a class="brand" href="#top" aria-label="Ubstream home">
+        <img src="assets/ubstream-icon.png" alt="" />
+        <span>Ubstream</span>
+      </a>
+      <a class="top-link" href="#download">Get the app ↓</a>
+    </header>
+
+    <main id="top" class="shell">
+      <section class="hero" aria-labelledby="hero-title">
+        <div class="hero-copy">
+          <div class="eyebrow">Movies · Series · Anime</div>
+          <h1 id="hero-title">Your next watch starts <span>here.</span></h1>
+          <p class="lead">Meet Ubstream: a thoughtful Android experience for discovering what to watch and settling in for the story.</p>
+          <div class="actions">
+            <a class="button button-primary" id="download" href="https://github.com/faisaljs/Ubstream/releases/download/v1.0/Ubstream.apk">
+              <span class="download-icon" aria-hidden="true">↓</span> Download for Android
+            </a>
+            <a class="button button-secondary" href="#features-title">Explore features ↓</a>
+          </div>
+          <p class="version-note">Latest version <span id="version">1.0</span> · Android 7.0 and up</p>
+        </div>
+
+        <div class="preview-wrap" aria-label="Illustration of the Ubstream app on a phone">
+          <div class="phone">
+            <div class="screen">
+              <div class="screen-top"><b>ub<span>stream</span></b><span>⌕　◉</span></div>
+              <div class="search">⌕　 Search movies, shows, anime...</div>
+              <div class="screen-label">Trending now</div>
+              <div class="poster-row">
+                <div class="poster"><span class="poster-title">THE LAST VOYAGE</span></div>
+                <div class="poster"><span class="poster-title">AFTER THE FALL</span></div>
+                <div class="poster"><span class="poster-title">WILD HORIZON</span></div>
+              </div>
+              <div class="screen-label">Continue watching</div>
+              <div class="continue">
+                <div class="continue-art"></div>
+                <div class="continue-info">The Silent City<small>Season 1 · Episode 4</small><div class="progress"></div></div>
+              </div>
+              <div class="screen-label">Find your next favorite</div>
+              <div class="poster-row">
+                <div class="poster" style="height:76px"><span class="poster-title">NORTH STAR</span></div>
+                <div class="poster" style="height:76px"><span class="poster-title">RED PLANET</span></div>
+                <div class="poster" style="height:76px"><span class="poster-title">BLUE HOUR</span></div>
+              </div>
+            </div>
+            <div class="phone-badge"><strong>Made for Android</strong><br />Ready when you are</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="features" aria-labelledby="features-title">
+        <h2 class="section-heading" id="features-title">Everything you need for movie night</h2>
+        <div class="feature-grid">
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">⌕</div>
+            <h3>Find something good</h3>
+            <p>Browse and search movies, series, and anime from one home.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">♡</div>
+            <h3>Your list, your history</h3>
+            <p>Keep favorites close and pick up where you left off.</p>
+          </article>
+          <article class="feature">
+            <div class="feature-icon" aria-hidden="true">▶</div>
+            <h3>A player that fits</h3>
+            <p>Enjoy playback controls, subtitle options, and audio choices.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="install" aria-labelledby="install-title">
+        <div>
+          <h2 id="install-title">Ready to press play?</h2>
+          <p>Download the APK, open it on your Android device, and follow the install prompts.</p>
+        </div>
+        <a class="button button-primary" id="download-bottom" href="https://github.com/faisaljs/Ubstream/releases/download/v1.0/Ubstream.apk">Download Ubstream ↓</a>
+      </section>
+    </main>
+
+    <footer class="shell">
+      <span>© <span id="year"></span> Ubstream</span>
+      <span>Made for Android</span>
+    </footer>
+
+    <script>
+      document.getElementById("year").textContent = new Date().getFullYear();
+      fetch("./version.json", { cache: "no-store" })
+        .then((response) => response.ok ? response.json() : Promise.reject())
+        .then((release) => {
+          if (release.versionName) document.getElementById("version").textContent = release.versionName;
+          if (release.downloadUrl) {
+            document.getElementById("download").href = release.downloadUrl;
+            document.getElementById("download-bottom").href = release.downloadUrl;
+          }
+        })
+        .catch(() => {});
+    </script>
+  </body>
+</html>
